@@ -19,6 +19,7 @@ var upgrader = websocket.Upgrader{
 var result struct {
 	Type    string
 	StepNos string
+	Symbol  string
 	Content string
 }
 
@@ -53,9 +54,13 @@ func main() {
 			msg := ""
 			switch result.Type {
 			case "step":
-				msg = "🍅 Go to the next step #" + result.StepNos
+				additionalMsg := ""
+				if len(result.Symbol) > 0 || len(result.StepNos) > 0 {
+					additionalMsg = " " + result.Symbol + "#" + result.StepNos
+				}
+				msg = "🍅 Go to the next step" + additionalMsg
 			case "finish":
-				msg = "🍅 Finished! #" + result.StepNos
+				msg = "🍅 Finished!"
 			}
 			if len(msg) > 0 {
 				fmt.Println("Send notification: " + msg)
